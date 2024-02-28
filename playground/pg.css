@@ -1,0 +1,47 @@
+body {
+    margin: 0px;
+    padding: 0px;
+
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
+
+.left {
+    padding: 8px;
+    background-color: lightgray;
+    display: flex;
+    flex-direction: column;
+}
+
+.programArea {
+    width: 100%;
+    flex: 1;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    background-color: white;
+    border: 1px solid gray;
+}
+
+h1 {
+    margin: 0px;
+}
+
+p {
+    margin: 8px 0 8px 0;
+}
+
+.errorConsole {
+    height: 100px;
+    width: auto;
+    background-color: darkslategray;
+    padding: 8px;
+    color: yellowgreen;
+}
+
+.right {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+}

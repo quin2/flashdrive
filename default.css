@@ -1,0 +1,45 @@
+#root a {
+    display: block;
+}
+
+#root input {
+    display: block;
+    margin-top: 5px;
+}
+
+#root button {
+    display: block;
+}
+
+#root {
+    border: 2px solid brown;
+    border-radius: 20px;
+    padding: 20px;
+    width: 300px;
+    max-height: 400px;
+}
+
+#root h1, h2, h3, h4, h5, h6 {
+    margin: 0px;
+}
+
+#root label {
+    margin-top: 5px;
+    font-size: 1rem;
+    color: gray;
+}
+
+#root input {
+    border: 1px solid black;
+    border-radius: 5px;
+    font-size: 1rem;
+    padding: 2px;
+}
+
+#root button {
+    border: 1px solid black;
+    font-size: 1rem;
+    padding: 2px;
+    border-radius: 5px;
+    margin-top: 5px;
+}

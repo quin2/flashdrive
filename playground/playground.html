@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>flash demo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="pg.css">
+        <link rel="stylesheet" href="../default.css">
+    </head>
+    <body>
+        <div class="left">
+            <h1>Flashdrive Playground</h1>
+            <p>Try running some FlashDrive code directly to see how it works!</p>
+            <div>
+                <button id="run">Run</button>
+            </div>
+            <textarea id="editor" class="programArea" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            </textarea>
+
+            <div class="errorConsole" id="console">
+
+            </div>
+        </div>
+        
+        <div class="right">
+            <div id="root"></div>
+        </div>
+        <script src="pg.js"></script>
+        <script src="jsarea.js"></script>
+        <script src="../flashdrive.js"></script>
+    </body>
+</html>
