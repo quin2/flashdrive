@@ -17,7 +17,7 @@ class FDMaker {
             }
         })
 
-        const fd = {
+        this.fd = {
             text: this.text.bind(this),
             extLink: this.extLink.bind(this),
             link: this.link.bind(this),
@@ -26,15 +26,18 @@ class FDMaker {
             heading: this.heading.bind(this),
             field: this.field.bind(this),
             button: this.button.bind(this),
-            goto: this.navHandler.bind(this),
+            goto: this.initCore.bind(this),
             state: this.state
         };
 
-        this.corefunc = () => corefunc(fd);
+        this.initCore(corefunc)
+    }
+
+    initCore(infunc){
+        this.ready = false
+        this.corefunc = () => infunc(this.fd);
         this.res = this.corefunc();
-
         this.refresh();
-
         this.ready = true;
     }
 
@@ -50,7 +53,7 @@ class FDMaker {
     link(name, dest){
         let link = this.addTextElem("a", name);
         link.setAttribute("href", "#");
-        link.addEventListener("click", () => this.navHandler(dest));
+        link.addEventListener("click", () => this.initCore(dest));
     }
 
     title(content){
@@ -68,10 +71,6 @@ class FDMaker {
         elem.innerHTML = text;
         this.root.appendChild(elem);
         return elem;
-    }
-
-    navHandler(dest){
-        new FDMaker(dest);
     }
 
     heading(content, level){

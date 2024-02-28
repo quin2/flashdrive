@@ -39,7 +39,7 @@ function card(fd){
 ```
 Where the function returned is called every time the component renders, from the wrapper function context.
 
-The entire state of each card is held in ```fd.state```. All form inputs are bound to this variable, and you can also store any additional application state as well. If any state variable that you stored changes, the function returned from the card function is called, and the entire card rerenders.
+The entire state of each card is held in ```fd.state```. All form inputs are bound to this variable, and you can also store any additional application state as well. If any state variable that you stored changes, the function returned from the card function is called, and the entire card rerenders. Unless you clear it out manually, state will also persist between all cards. 
 
 If you need to, you can also trigger a rerender with ```fd.refresh()```
 
@@ -52,6 +52,11 @@ fd.title("My awesome title")
 Sets the title of the current card
 
 ### heading
+Usage:
+```
+fd.heading("Heading",headingLevel)
+```
+Displays a heading on the card at the given headingLevel
 
 ### text
 Usage:

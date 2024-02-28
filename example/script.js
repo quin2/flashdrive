@@ -47,8 +47,27 @@ function main(fd){
 		fd.link("Temperature converter", tempconvert)
 		fd.link("Counter", counters)
 		fd.link("To do list", editableList)
+		fd.link("Passing data", passing)
 
-		fd.extLink("Github page", "https://www.google.com")
+		fd.extLink("Github page", "https://github.com/quin2/flashdrive")
+	}
+}
+
+function passing(fd){
+	fd.state._pass = ""
+	
+	return () => {
+		fd.title("Passing data")
+		fd.field("Example text", "text", "_pass")
+		fd.link("Go to next", passing2)
+	}
+}
+
+function passing2(fd){
+	return () => {
+		console.log(fd.state)
+		fd.title("Result")
+		fd.text(fd.state._pass)
 	}
 }
 
@@ -91,7 +110,6 @@ function counters(fd){
 		fd.title("counters")
 		fd.text(`Sum is ${fd.state.sum}`)
 		fd.button("add 1", increase)
-		fd.link("tempconvert", tempconvert)
 	};
 	
 }
