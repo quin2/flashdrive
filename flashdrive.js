@@ -15,7 +15,9 @@ class FDMaker {
                 }
                 return Reflect.set(target, name, value, reciever);
             }
-        })
+        });
+
+        this.history = [];
 
         this.fd = {
             text: this.text.bind(this),
@@ -26,16 +28,23 @@ class FDMaker {
             heading: this.heading.bind(this),
             field: this.field.bind(this),
             button: this.button.bind(this),
-            goto: this.initCore.bind(this),
+            goto: this.goto.bind(this),
             state: this.state
         };
 
-        this.initCore(corefunc)
+        this.initCore(corefunc, null);
     }
 
-    initCore(infunc){
-        this.ready = false
-        this.corefunc = () => infunc(this.fd);
+    goto(infunc, pass){
+        if(this.corefunc !== undefined){
+            this.history.push(this.corefunc);
+        }
+        this.initCore(infunc, pass);
+    }
+
+    initCore(infunc, pass){
+        this.ready = false;
+        this.corefunc = () => infunc(this.fd, pass);
         this.res = this.corefunc();
         this.refresh();
         this.ready = true;
@@ -50,10 +59,14 @@ class FDMaker {
         link.setAttribute("href", location);
     }w
 
-    link(name, dest){
+    link(name, dest, pass){
+        this.intLink(name, () => this.goto(dest, pass));
+    }
+
+    intLink(name, el){
         let link = this.addTextElem("a", name);
         link.setAttribute("href", "#");
-        link.addEventListener("click", () => this.initCore(dest));
+        link.addEventListener("click", el);
     }
 
     title(content){
@@ -63,7 +76,16 @@ class FDMaker {
 
     refresh(){
         this.root.innerHTML = "";
+     
+        if(this.history.length > 0){
+            this.intLink("Back", () => this.goBack());
+        }
         this.res();
+    }
+
+    goBack(){
+        let last = this.history.pop()
+        this.initCore(last)
     }
 
     addTextElem(tag, text){

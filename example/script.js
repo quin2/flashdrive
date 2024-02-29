@@ -55,19 +55,19 @@ function main(fd){
 
 function passing(fd){
 	fd.state._pass = ""
-	
+
 	return () => {
 		fd.title("Passing data")
 		fd.field("Example text", "text", "_pass")
-		fd.link("Go to next", passing2)
+		fd.link("Go to next", passing2, {baz: 2})
 	}
 }
 
-function passing2(fd){
+function passing2(fd, input){
 	return () => {
-		console.log(fd.state)
 		fd.title("Result")
 		fd.text(fd.state._pass)
+		fd.text(`This should be 2: ${input.baz}`)
 	}
 }
 

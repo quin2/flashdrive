@@ -39,6 +39,8 @@ function card(fd){
 ```
 Where the function returned is called every time the component renders, from the wrapper function context.
 
+When the card first appears on the screen, everything inside the containing function is called once. If you need to initalize variables, do it there.
+
 The entire state of each card is held in ```fd.state```. All form inputs are bound to this variable, and you can also store any additional application state as well. If any state variable that you stored changes, the function returned from the card function is called, and the entire card rerenders. Unless you clear it out manually, state will also persist between all cards. 
 
 If you need to, you can also trigger a rerender with ```fd.refresh()```
@@ -68,9 +70,9 @@ Displays a line of text in the card
 ### link
 Usage:
 ```
-fd.link("Link title", nextCardFunction)
+fd.link("Link title", nextCardFunction, toPass)
 ```
-Displays a link that will redirect the user to the next card in the stack
+Displays a link that will redirect the user to the next card in the stack. toPass should be set to anything you want to pass to the next card.
 
 ### extlink
 Usage:
@@ -82,9 +84,9 @@ Displays a link that will redirect the user to an external website
 ### goto
 Usage:
 ```
-fd.goto(nextCardFunction)
+fd.goto(nextCardFunction, toPass)
 ```
-When called, redirects the user to the next card
+When called, redirects the user to the next card. toPass behaves the same as it does in link.
 
 ### field
 Usage:
@@ -131,3 +133,75 @@ function main(fd){
 	};
 }
 ```
+
+
+
+function main(fd) {
+    // Initialize project tracker state
+    if (!fd.state.projects) {
+        fd.state.projects = [];
+        fd.state.newProjectTitle = "";
+    }
+
+    function addProject() {
+        if(fd.state.newProjectTitle) {
+            fd.state.projects.push({
+                title: fd.state.newProjectTitle,
+                tasks: []
+            });
+            fd.state.newProjectTitle = ""; // clear input after add
+        }
+        fd.refresh();
+    }
+
+    return () => {
+        fd.title("Project Tracker");
+        
+        // Project creation form
+        fd.text("Add a new project:");
+        fd.field("Project Title", "text", "newProjectTitle");
+        fd.button("Add Project", addProject);
+
+        // List existing projects
+        fd.heading("Projects", 1);
+        if (fd.state.projects.length === 0) {
+            fd.text("No projects added yet.");
+        } else {
+            fd.state.projects.forEach((project, index) => {
+                fd.link(project.title, projectCard, {project: project, index: index});
+            });
+        }
+    };
+}
+
+function projectCard(fd, inp) {
+	  function addTask(projectIndex) {
+        return function() {
+            const taskTitle = prompt("Task Title:");
+            if (taskTitle) {
+                fd.state.projects[projectIndex].tasks.push({
+                    title: taskTitle,
+                    done: false
+                });
+            }
+            fd.refresh();
+        };
+    }
+
+    function toggleTaskStatus(projectIndex, taskIndex) {
+        return function() {
+            let task = fd.state.projects[projectIndex].tasks[taskIndex];
+            task.done = !task.done;
+            fd.refresh();
+        };
+    }
+
+        return () => {
+            fd.heading(inp.project.title, 2);
+            inp.project.tasks.forEach((task, taskIndex) => {
+                fd.text(`${task.done ? "✅" : "❌"} ${task.title}`);
+                fd.button("Toggle", toggleTaskStatus(inp.index, taskIndex));
+            });
+            fd.button("Add Task", addTask(inp.index));
+        };
+    }
