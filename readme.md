@@ -74,10 +74,10 @@ fd.link("Link title", nextCardFunction, toPass)
 ```
 Displays a link that will redirect the user to the next card in the stack. toPass should be set to anything you want to pass to the next card.
 
-### extlink
+### extLink
 Usage:
 ```
-fd.extlink("Link title", "https://www.example.com")
+fd.extLink("Link title", "https://www.example.com")
 ```
 Displays a link that will redirect the user to an external website
 
@@ -136,72 +136,3 @@ function main(fd){
 
 
 
-function main(fd) {
-    // Initialize project tracker state
-    if (!fd.state.projects) {
-        fd.state.projects = [];
-        fd.state.newProjectTitle = "";
-    }
-
-    function addProject() {
-        if(fd.state.newProjectTitle) {
-            fd.state.projects.push({
-                title: fd.state.newProjectTitle,
-                tasks: []
-            });
-            fd.state.newProjectTitle = ""; // clear input after add
-        }
-        fd.refresh();
-    }
-
-    return () => {
-        fd.title("Project Tracker");
-        
-        // Project creation form
-        fd.text("Add a new project:");
-        fd.field("Project Title", "text", "newProjectTitle");
-        fd.button("Add Project", addProject);
-
-        // List existing projects
-        fd.heading("Projects", 1);
-        if (fd.state.projects.length === 0) {
-            fd.text("No projects added yet.");
-        } else {
-            fd.state.projects.forEach((project, index) => {
-                fd.link(project.title, projectCard, {project: project, index: index});
-            });
-        }
-    };
-}
-
-function projectCard(fd, inp) {
-	  function addTask(projectIndex) {
-        return function() {
-            const taskTitle = prompt("Task Title:");
-            if (taskTitle) {
-                fd.state.projects[projectIndex].tasks.push({
-                    title: taskTitle,
-                    done: false
-                });
-            }
-            fd.refresh();
-        };
-    }
-
-    function toggleTaskStatus(projectIndex, taskIndex) {
-        return function() {
-            let task = fd.state.projects[projectIndex].tasks[taskIndex];
-            task.done = !task.done;
-            fd.refresh();
-        };
-    }
-
-        return () => {
-            fd.heading(inp.project.title, 2);
-            inp.project.tasks.forEach((task, taskIndex) => {
-                fd.text(`${task.done ? "✅" : "❌"} ${task.title}`);
-                fd.button("Toggle", toggleTaskStatus(inp.index, taskIndex));
-            });
-            fd.button("Add Task", addTask(inp.index));
-        };
-    }
