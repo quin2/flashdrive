@@ -11,10 +11,23 @@
             <h1>Flashdrive Playground</h1>
             <p>Try running some FlashDrive code directly to see how it works!</p>
             <div>
+                <div>Generate</div>
+                <div>
+                    <label for="key">OpenAI api key</label>
+                    <input name="key" id="key" type="text"/>
+                </div>
+                
+                <div>
+                    <label for="prompt">Prompt</label>
+                    <input name="prompt" id="prompt" type="text"/>
+                </div>
+                <button id="gen">Generate</button>
+            </div>
+            <div>
+                <div>Code area</div>
                 <button id="run">Run</button>
             </div>
-            <textarea id="editor" class="programArea" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-            </textarea>
+            <textarea id="editor" class="programArea" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
 
             <div class="errorConsole" id="console">
 
