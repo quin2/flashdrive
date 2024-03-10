@@ -48,8 +48,17 @@ function main(fd){
 		fd.link("Counter", counters)
 		fd.link("To do list", editableList)
 		fd.link("Passing data", passing)
+		fd.link("MultiPick", multipick)
 
 		fd.extLink("Github page", "https://github.com/quin2/flashdrive")
+	}
+}
+
+function multipick(fd){
+	return () => {
+		fd.title("multipick")
+		fd.text(`response is ${fd.state.status}`)
+		fd.pick("Do you like?", ["Yes", "No", "Uhhh"], "status")
 	}
 }
 

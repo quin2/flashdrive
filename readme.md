@@ -104,6 +104,13 @@ let validationFunc = (newValue) => {
 ```
 If isValid is false, the validation message is shown. Otherwise, we don't show any validation message. 
 
+### pick
+Usage:
+```
+fd.pick("title", ["option 1", "option 2"], "stateKey")
+```
+Displays an HTML select element with a title. Options in the select are defined by the array in the second parameter, and by default, the key in the state is set to the first option. Like ```field```, the key in the state represented by stateKey will change when the selected value changes
+
 ### button
 ```
 fd.button("Label", functionToCall)

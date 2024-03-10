@@ -37,20 +37,36 @@ async function runPrompt(){
     btn.innerHTML = "Loading..."
 
     //get docs
-    //https://raw.githubusercontent.com/quin2/flashdrive/main/readme.md
     let docs = await fetch("https://raw.githubusercontent.com/quin2/flashdrive/main/readme.md")
     docs = await docs.text()
 
+    let example = await fetch("https://raw.githubusercontent.com/quin2/flashdrive/main/example/script.js")
+    example = await example.text()
+
     const finalPrompt = `Write the JavaScript for ${prompt} using the framework below. Only return JavaScript without formatting. You may create multiple cards. 
-    THe framework will handle creating a back button:
-        ${docs}`
+    THe framework will handle creating a back button. Here's the documentation:
+        ${docs}
+    Here's an example page to get you familiar with the framework:
+        ${example}`
+
+
+    let result = await getResponse(finalPrompt)
+
+    btn.innerHTML = "Generate"
+
+    codeArea.value = extractContents(result)
+    loadCode()
+}
+
+async function getResponse(prompt){
+    let key = document.getElementById("key").value;
 
     const req = {
         "model": "gpt-4-turbo-preview",
         "messages": [
             {
                 "role": "user",
-                "content": finalPrompt
+                "content": prompt
             }
         ]
     }
@@ -66,10 +82,7 @@ async function runPrompt(){
 
     result = await result.json()
 
-    btn.innerHTML = "Generate"
-
-    codeArea.value = extractContents(result.choices[0].message.content)
-    loadCode()
+    return result.choices[0].message.content
 }
 
 function extractContents(input){
@@ -87,19 +100,3 @@ function extractContents(input){
     }
     return matches[0];
 }
-
-/*
-function main(fd){
-	return () => {
-		fd.title("home")
-		fd.text("Flashdrive examples")
-		fd.link("Titles", next)
-		fd.link("Form playground", forms)
-		fd.link("Temperature converter", tempconvert)
-		fd.link("Counter", counters)
-		fd.link("To do list", editableList)
-
-		fd.extLink("Github page", "https://www.google.com")
-	}
-}
-*/

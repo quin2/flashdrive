@@ -16,7 +16,8 @@
     border-radius: 20px;
     padding: 20px;
     width: 300px;
-    max-height: 400px;
+    height: 400px;
+    overflow: scroll;
 }
 
 #root h1, h2, h3, h4, h5, h6 {

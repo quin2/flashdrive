@@ -28,6 +28,7 @@ class FDMaker {
             heading: this.heading.bind(this),
             field: this.field.bind(this),
             button: this.button.bind(this),
+            pick: this.pick.bind(this),
             goto: this.goto.bind(this),
             state: this.state
         };
@@ -103,17 +104,13 @@ class FDMaker {
         let ff = document.createElement("input");
         ff.setAttribute("name", tag);
         ff.setAttribute("type", type);
-        if(tag !== undefined){
+        if(this.state[tag] !== undefined){
             ff.setAttribute("value", this.state[tag]);
         }
 
         ff.addEventListener("input", (e) => this.stateHandler(e, tag));
 
-        let fft = document.createElement("label");
-        fft.setAttribute("for", tag);
-        fft.innerHTML = title;
-
-        this.root.appendChild(fft);
+        this.label(title, tag);
         this.root.appendChild(ff);
         
         if(validation){
@@ -123,6 +120,13 @@ class FDMaker {
             lb.classList.add("msg");
             this.root.appendChild(lb);
         }
+    }
+
+    label(text, linked){
+        let fft = document.createElement("label");
+        fft.setAttribute("for", linked);
+        fft.innerHTML = text;
+        this.root.appendChild(fft);
     }
 
     stateHandler(e, tag){
@@ -148,6 +152,31 @@ class FDMaker {
     button(text, callback){
         let button = this.addTextElem("button", text);
         button.addEventListener("click", callback);
+    }
+
+    pick(title, options, tag){
+       const sel = document.createElement("select");
+       sel.setAttribute("name", tag);
+
+        if(this.state[tag] === undefined && options.length > 0){
+            console.log("yuh")
+            this.state[tag] = options[0]
+        }
+
+       for(let i = 0; i < options.length; i++){
+            const selItem = document.createElement("option");
+            selItem.setAttribute("value", options[i]);
+            selItem.innerHTML = options[i];
+            if(this.state[tag] === options[i]){
+                selItem.setAttribute("selected", "selected");
+            }
+            sel.appendChild(selItem);
+       }
+
+       sel.addEventListener("input", (e) => {this.state[tag] = e.target.value;});
+
+       this.label(title, tag);
+       this.root.appendChild(sel);
     }
 }
 
